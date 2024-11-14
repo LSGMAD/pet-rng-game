@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet RNG Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .pet-info {
+            font-size: 18px;
+            margin-top: 15px;
+        }
+        .rarity {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pet RNG Game</h1>
+        <p>Click the button to roll for a pet!</p>
+
+        <button class="button" onclick="rollPet()">Roll for Pet</button>
+
+        <div id="pet-display">
+            <div id="pet-info" class="pet-info"></div>
+        </div>
+    </div>
+
+    <script>
+        // Pet data with names and rarities (no images)
+        const pets = [
+            // Common Pets
+            { name: "Dog", rarity: "Common" },
+            { name: "Cat", rarity: "Common" },
+            { name: "Rabbit", rarity: "Common" },
+            { name: "Hamster", rarity: "Common" },
+            { name: "Goldfish", rarity: "Common" },
+
+            // Uncommon Pets
+            { name: "Turtle", rarity: "Uncommon" },
+            { name: "Penguin", rarity: "Uncommon" },
+            { name: "Lizard", rarity: "Uncommon" },
+            { name: "Parrot", rarity: "Uncommon" },
+            { name: "Frog", rarity: "Uncommon" },
+
+            // Rare Pets
+            { name: "Dragon", rarity: "Rare" },
+            { name: "Unicorn", rarity: "Rare" },
+            { name: "Phoenix", rarity: "Rare" },
+            { name: "Griffin", rarity: "Rare" },
+            { name: "Manticore", rarity: "Rare" },
+
+            // Legendary Pets
+            { name: "Pegasus", rarity: "Legendary" },
+            { name: "Cerberus", rarity: "Legendary" },
+            { name: "Kraken", rarity: "Legendary" },
+            { name: "Elder Dragon", rarity: "Legendary" },
+            { name: "Chimera", rarity: "Legendary" },
+
+            // Mythical Pets
+            { name: "Rainbow Unicorn", rarity: "Mythical" },
+            { name: "Gold Dragon", rarity: "Mythical" },
+            { name: "Void Phoenix", rarity: "Mythical" },
+            { name: "Galaxy Wolf", rarity: "Mythical" },
+            { name: "Eclipse Phoenix", rarity: "Mythical" },
+
+            // Secret Pets
+            { name: "Mystic Griffin", rarity: "Secret" },
+            { name: "Shiny Unicorn", rarity: "Secret" },
+            { name: "Crystal Dragon", rarity: "Secret" },
+            { name: "Moonlight Manticore", rarity: "Secret" },
+            { name: "Cosmic Pegasus", rarity: "Secret" },
+
+            // Huge Pets (extremely rare)
+            { name: "Huge Dog", rarity: "Huge" },
+            { name: "Huge Cat", rarity: "Huge" },
+            { name: "Huge Dragon", rarity: "Huge" },
+            { name: "Huge Griffin", rarity: "Huge" },
+            { name: "Huge Pegasus", rarity: "Huge" },
+            { name: "Huge Unicorn", rarity: "Huge" },
+            { name: "Huge Phoenix", rarity: "Huge" },
+            { name: "Huge Kraken", rarity: "Huge" },
+            { name: "Huge Cerberus", rarity: "Huge" },
+            { name: "Huge Elder Dragon", rarity: "Huge" }
+        ];
+
+        // Function to roll for a pet
+        function rollPet() {
+            // Generate a random number to simulate chances
+            const chance = Math.random();
+
+            // Adjusted weights for rarities:
+            let weightedPets = [];
+
+            // Adjust the weights for each rarity:
+            pets.forEach(pet => {
+                let weight = 0;
+
+                switch (pet.rarity) {
+                    case "Common":
+                        weight = 0.35; // 35% chance for common
+                        break;
+                    case "Uncommon":
+                        weight = 0.25; // 25% chance for uncommon
+                        break;
+                    case "Rare":
+                        weight = 0.15; // 15% chance for rare
+                        break;
+                    case "Legendary":
+                        weight = 0.10; // 10% chance for legendary
+                        break;
+                    case "Mythical":
+                        weight = 0.08; // 8% chance for mythical
+                        break;
+                    case "Secret":
+                        weight = 0.001; // 0.1% chance for secret (now rarer)
+                        break;
+                    case "Huge":
+                        weight = 0.0005; // 0.05% chance for huge (more rare than secret)
+                        break;
+                }
+
+                // Add the pet to the weighted array based on its rarity weight
+                for (let i = 0; i < weight * 1000; i++) {
+                    weightedPets.push(pet);
+                }
+            });
+
+            // Select a random pet from the weighted array
+            const selectedPet = weightedPets[Math.floor(Math.random() * weightedPets.length)];
+
+            // Get the pet info
+            const petInfo = document.getElementById("pet-info");
+
+            // Update the pet info text
+            petInfo.innerHTML = `${selectedPet.name} - <span class="rarity">${selectedPet.rarity}</span>`;
+
+            // Change text color based on rarity
+            switch (selectedPet.rarity) {
+                case "Common":
+                    petInfo.style.color = "gray";
+                    break;
+                case "Uncommon":
+                    petInfo.style.color = "green";
+                    break;
+                case "Rare":
+                    petInfo.style.color = "blue";
+                    break;
+                case "Legendary":
+                    petInfo.style.color = "gold";
+                    break;
+                case "Mythical":
+                    petInfo.style.color = "purple";
+                    break;
+                case "Secret":
+                    petInfo.style.color = "black";
+                    break;
+                case "Huge":
+                    petInfo.style.color = "red";
+                    break;
+            }
+        }
+    </script>
+
+</body>
+</html>
